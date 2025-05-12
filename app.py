@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 from datetime import datetime
 from models import Exercise, WorkoutPlan, ProgressTracker
 
@@ -214,9 +213,8 @@ elif page == "Track Progress":
         # Plot progress for selected exercise
         exercise = st.selectbox("Select Exercise for Visualization", df["Exercise"].unique())
         exercise_data = df[df["Exercise"] == exercise]
-        fig = px.line(exercise_data, x="Date", y="Weight", title=f"Weight Progress for {exercise}",
-                      markers=True)
-        st.plotly_chart(fig)
+        st.line_chart(exercise_data.set_index("Date")[["Weight"]])
+
         # Show suggestion
         suggestion = st.session_state.tracker.suggest_adjustments(exercise)
         st.write("**Suggestion**: ", suggestion)
